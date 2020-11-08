@@ -1,3 +1,5 @@
 ﻿  Source4.c
-C:\Users\Korisnik\Desktop\source\repos\StrukturePodataka\Zad4\Source4.c(23,8): warning C4101: 'File': unreferenced local variable
+C:\Users\Korisnik\Desktop\source\repos\StrukturePodataka\Zad4\Source4.c(34,19): warning C4101: 'sumExp': unreferenced local variable
+C:\Users\Korisnik\Desktop\source\repos\StrukturePodataka\Zad4\Source4.c(24,8): warning C4101: 'File': unreferenced local variable
+C:\Users\Korisnik\Desktop\source\repos\StrukturePodataka\Zad4\Source4.c(34,7): warning C4101: 'sumCoeff': unreferenced local variable
   Zad4.vcxproj -> C:\Users\Korisnik\Desktop\source\repos\StrukturePodataka\Zad4\Debug\Zad4.exe

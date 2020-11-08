@@ -18,6 +18,7 @@ void insertEnd(Position, Position);
 void printList(Position);
 void sumPolinom(Position, Position, Position);
 void readFile(char* fileName,Position,Position);
+void multPolinom(Position);
 
 int main() {
 	FILE* File;
@@ -29,9 +30,10 @@ int main() {
 	head1.next = NULL;
 	head2.next = NULL;
 	head3.next = NULL;
-	int coeff = 0, exp = 0;
+	int coeff = 0, exp = 0,ask;
+	int* sumCoeff, * sumExp;
 	char fileName[256];
-	printf("Insert file name: ");
+	printf("Insert file name (including .txt extension): ");
 	scanf("%s",fileName);
 	
 	readFile(fileName,&head1,&head2);
@@ -44,6 +46,16 @@ int main() {
 	sumPolinom(&head1, &head2, &head3);
 	printf("\nSum of polinoms list content:\n\tcoeff\texp\n");
 	printList(&head3);
+
+	printf("Which list you want to multiply (insert 1) for first (insert 2) for second: ");
+	scanf("%d", &ask);
+	
+	if (ask == 1) 
+		multPolinom(&head1);
+	else if (ask == 2) 
+		multPolinom(&head2);
+	else
+		printf("Wrong input !");
 
 	return 0;
 }
@@ -156,6 +168,20 @@ void sumPolinom(Position P, Position Q, Position head3) {
 			P = P->next;
 		}
 	}
+}
+
+void multPolinom(Position head) {
+	head = head->next;
+	int sumCoeff = 1, sumExp = 0;
+
+	while (head != NULL) {
+		if (head->coeff != 0)
+			sumCoeff *= abs(head->coeff);
+		if (head->exp != 0)
+			sumExp += head->exp;
+		head = head->next;
+	}
+	printf("Result is: %d %d\n", sumCoeff, sumExp);
 }
 
 void printList(Position head) {
