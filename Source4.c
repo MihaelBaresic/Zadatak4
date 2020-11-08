@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 struct _polinom;
 typedef struct _polinom* Position;
 typedef struct _polinom {
@@ -12,24 +11,19 @@ typedef struct _polinom {
 	Position next;
 }polinom;
 
-
 Position createPolinom(int, int);
 void insertEnd(Position, Position);
 void printList(Position);
 void sumPolinom(Position, Position, Position);
 void readFile(char* fileName,Position,Position);
 void multPolinom(Position);
+void Sort(int, int, Position);
 
 int main() {
 	FILE* File;
-	Position P = NULL;
-	Position Q = NULL;
-	polinom head1;
-	polinom head2;
-	polinom head3;
-	head1.next = NULL;
-	head2.next = NULL;
-	head3.next = NULL;
+	Position P = NULL,Q=NULL;
+	polinom head1, head2, head3;
+	head1.next = NULL,head2.next=NULL,head3.next=NULL;
 	int coeff = 0, exp = 0,ask;
 	int* sumCoeff, * sumExp;
 	char fileName[256];
@@ -74,7 +68,6 @@ Position createPolinom(int coeff, int exp) {
 	return K;
 }
 
-
 void insertEnd(Position head, Position K) {
 	while (head->next != NULL)
 		head = head->next;
@@ -84,8 +77,7 @@ void insertEnd(Position head, Position K) {
 }
 
 void readFile(char* fileName,Position head1,Position head2) {
-	Position P=NULL;
-	Position Q=NULL;
+	Position P = NULL, Q = NULL;
 	int coeff = 0, exp = 0;
 
 	FILE* File;
@@ -98,14 +90,12 @@ void readFile(char* fileName,Position head1,Position head2) {
 		c = fgetc(File);
 		if (c != '\n') {
 			fscanf(File, "%d %d", &coeff, &exp);
-			P = createPolinom(coeff, exp);
-			insertEnd(head1, P);
+			Sort(coeff, exp, head1);
 		}
 		else {
 			while (!feof(File)) {
 				fscanf(File, "%d %d", &coeff, &exp);
-				Q = createPolinom(coeff, exp);
-				insertEnd(head2, Q);
+				Sort(coeff, exp, head2);
 			}
 		}
 	}
@@ -181,20 +171,31 @@ void multPolinom(Position head) {
 			sumExp += head->exp;
 		head = head->next;
 	}
-	printf("Result is: %d %d\n", sumCoeff, sumExp);
+	printf("Result is:\n\tcoeff\texp\n\t%d\t%d", sumCoeff, sumExp);
+}
+
+void Sort(int coeff, int exp, Position head)
+{
+	Position K=NULL;
+
+	while (head->next != NULL && head->next->exp < exp)
+		head = head->next;
+
+	K = createPolinom(coeff, exp);
+
+	K->next = head->next;
+	head->next = K;
 }
 
 void printList(Position head) {
-	
-	Position K = NULL;
-	
+
 	if (head->next == NULL)
 		printf("Linked list is empty");
 	
-	K = head->next;
-	while (K != NULL) {
-		printf("\t%d\t%d\n", K->coeff, K->exp);
-		K = K->next;
+	head = head->next;
+	while (head != NULL) {
+		printf("\t%d\t%d\n", head->coeff, head->exp);
+		head = head->next;
 	}
 
 	puts("\n");
