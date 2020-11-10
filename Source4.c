@@ -16,21 +16,22 @@ void insertEnd(Position, Position);
 void printList(Position);
 void sumPolinom(Position, Position, Position);
 void readFile(char* fileName,Position,Position);
-void multPolinom(Position);
+void multPolinom(Position, Position, Position);
 void Sort(int, int, Position);
+
 
 int main() {
 	FILE* File;
-	Position P = NULL,Q=NULL;
-	polinom head1, head2, head3;
-	head1.next = NULL,head2.next=NULL,head3.next=NULL;
-	int coeff = 0, exp = 0,ask;
+	Position P = NULL, Q = NULL;
+	polinom head1, head2, head3, head4;
+	head1.next = NULL, head2.next = NULL, head3.next = NULL, head4.next = NULL;
+	int coeff = 0, exp = 0;
 	int* sumCoeff, * sumExp;
 	char fileName[256];
 	printf("Insert file name (including .txt extension): ");
-	scanf("%s",fileName);
-	
-	readFile(fileName,&head1,&head2);
+	scanf("%s", fileName);
+
+	readFile(fileName, &head1, &head2);
 
 	printf("\nList1 content:\n\tcoeff\texp\n");
 	printList(&head1);
@@ -41,15 +42,9 @@ int main() {
 	printf("\nSum of polinoms list content:\n\tcoeff\texp\n");
 	printList(&head3);
 
-	printf("Which list you want to multiply (insert 1) for first (insert 2) for second: ");
-	scanf("%d", &ask);
-	
-	if (ask == 1) 
-		multPolinom(&head1);
-	else if (ask == 2) 
-		multPolinom(&head2);
-	else
-		printf("Wrong input !");
+	multPolinom(&head1, &head2, &head4);
+	printf("\nMultiplication of polinoms list content:\n\tcoeff\texp\n");
+	printList(&head4);
 
 	return 0;
 }
@@ -101,7 +96,7 @@ void readFile(char* fileName,Position head1,Position head2) {
 	}
 }
 
-void sumPolinom(Position P, Position Q, Position head3) {
+void sumPolinom(Position P, Position Q, Position head) {
 	Position S = NULL;
 	P = P->next;
 	Q = Q->next;
@@ -116,7 +111,7 @@ void sumPolinom(Position P, Position Q, Position head3) {
 			coeff = P->coeff + Q->coeff;
 			if (coeff != 0) {
 				S = createPolinom(coeff, P->exp);
-				insertEnd(head3, S);
+				insertEnd(head, S);
 			}
 			P = P->next;
 			Q = Q->next;
@@ -125,7 +120,7 @@ void sumPolinom(Position P, Position Q, Position head3) {
 			coeff = P->coeff;
 			if (coeff != 0) {
 				S = createPolinom(coeff, P->exp);
-				insertEnd(head3, S);
+				insertEnd(head, S);
 			}
 			P = P->next;
 		}
@@ -133,7 +128,7 @@ void sumPolinom(Position P, Position Q, Position head3) {
 			coeff = Q->coeff;
 			if (coeff != 0) {
 				S = createPolinom(coeff, Q->exp);
-				insertEnd(head3, S);
+				insertEnd(head, S);
 			}
 			Q = Q->next;
 		}
@@ -143,7 +138,7 @@ void sumPolinom(Position P, Position Q, Position head3) {
 			coeff = Q->coeff;
 			if (coeff != 0) {
 				S = createPolinom(coeff, Q->exp);
-				insertEnd(head3, S);
+				insertEnd(head, S);
 			}
 			Q = Q->next;
 		}
@@ -153,25 +148,38 @@ void sumPolinom(Position P, Position Q, Position head3) {
 			coeff = P->coeff;
 			if (coeff != 0) {
 				S = createPolinom(coeff, P->exp);
-				insertEnd(head3, S);
+				insertEnd(head, S);
 			}
 			P = P->next;
 		}
 	}
 }
 
-void multPolinom(Position head) {
-	head = head->next;
-	int sumCoeff = 1, sumExp = 0;
+void multPolinom(Position P, Position Q, Position head){
+	Position S = NULL;
+	Position temp = Q->next;
+	P = P->next;
+	Q = Q->next;
+	int coeff = 1, exp = 0;
 
-	while (head != NULL) {
-		if (head->coeff != 0)
-			sumCoeff *= abs(head->coeff);
-		if (head->exp != 0)
-			sumExp += head->exp;
-		head = head->next;
+	while (P != NULL)
+	{
+		if (P == NULL)
+			break;
+		if (Q == NULL)
+			break;
+		while (Q != NULL) {
+			coeff = P->coeff * Q->coeff;
+			exp = P->exp + Q->exp;
+			if (coeff != 0) {
+				S = createPolinom(coeff, exp);
+				insertEnd(head, S);
+			}
+			Q = Q->next;
+		}
+		Q = temp;
+		P = P->next;
 	}
-	printf("Result is:\n\tcoeff\texp\n\t%d\t%d", sumCoeff, sumExp);
 }
 
 void Sort(int coeff, int exp, Position head)
