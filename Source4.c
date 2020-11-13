@@ -18,7 +18,7 @@ void sumPolinom(Position, Position, Position);
 void readFile(char* fileName,Position,Position);
 void multPolinom(Position, Position, Position);
 void Sort(int, int, Position);
-
+void sortMult(Position);
 
 int main() {
 	FILE* File;
@@ -172,14 +172,14 @@ void multPolinom(Position P, Position Q, Position head){
 			coeff = P->coeff * Q->coeff;
 			exp = P->exp + Q->exp;
 			if (coeff != 0) {
-				S = createPolinom(coeff, exp);
-				insertEnd(head, S);
+				Sort(coeff, exp, head);
 			}
 			Q = Q->next;
 		}
 		Q = temp;
 		P = P->next;
 	}
+	sortMult(head);
 }
 
 void Sort(int coeff, int exp, Position head)
@@ -193,6 +193,36 @@ void Sort(int coeff, int exp, Position head)
 
 	K->next = head->next;
 	head->next = K;
+}
+
+void sortMult(Position head)
+{
+	Position P, temp;
+	P = head->next;
+	while (P->next != NULL)
+	{
+		if (P->exp == P->next->exp)
+		{
+			P->coeff = P->coeff + P->next->coeff;
+			temp = P->next;
+			P->next = temp->next;
+			free(temp);
+		}
+		else
+			P = P->next;
+	}
+	P = head->next;
+	while (P->next != NULL)
+	{
+		if (P->next->coeff == 0)
+		{
+			temp = P->next;
+			P->next = temp->next;
+			free(temp);
+		}
+		else
+			P = P->next;
+	}
 }
 
 void printList(Position head) {
